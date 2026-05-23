@@ -1,6 +1,9 @@
 import random
 import matplotlib.pyplot as plt
 
+#Задача: По булевой формуле j(р1, р2, …, рn) выяснить,
+# существует ли набор истинностных значений переменных а1,а2, …, аn,
+# для которого j(а1,а2, …, аn)=1
 
 class gasat:
     def __init__(self, formula, n_vars, pop_size=100, mutation_rate=0.05,
@@ -34,6 +37,8 @@ class gasat:
         return [random.choice([True, False]) for _ in range(self.n_vars)]
 
     def crossover(self, p1, p2):
+        if self.n_vars <= 1:
+            return p1[:]
         point = random.randint(1, self.n_vars - 1)
         return p1[:point] + p2[point:]
 
@@ -100,10 +105,9 @@ def run_example(formula, n_vars, name):
         print(f"набор: {assignment}")
     else:
         print(f"\nформула невыполнима (или решение не найдено)")
+        
     ga.plot(history)
 
 if __name__ == "__main__":
     run_example("(p1|p2)&(~p1|p2)", 2, "пример 1: выполнимая формула")
     run_example("(p1)&(~p1)", 1, "пример 2: невыполнимая формула")
-    run_example("(p1|p2|p3)&(p1|~p2|p4)&(~p1|p3|~p5)&(p2|~p4|p5)&(~p3|p4|~p1)",
-                5, "пример 3: 3-sat формула")
